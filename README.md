@@ -50,13 +50,13 @@ docker build -t syslog-ng . \
 docker rm syslog-ng
 
 # Run the container named "syslog-ng" and mount local local syslog-ng.conf
-# and write logs to $PWD/syslog-ng/logs
+# and write logs to $PWD/logs
 
 docker run --name syslog-ng -it -d \
     -p 514:514/udp \
     -p 601:601 \
     -v $PWD/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf \
-    -v $PWD/syslog-ng/logs:/var/log/syslog-ng \
+    -v $PWD/slogs:/var/log/syslog-ng \
    syslog-ng
 
 ```
@@ -94,8 +94,9 @@ services:
       - "601:601"
       - "6514:6514"
     volumes:
-      - "./syslog-ng/logs:/var/log/syslog-ng"
-      - "./syslog-ng/socket:/var/run/syslog-ng"
+      - "./logs:/var/log/syslog-ng"
+      - "./socket:/var/run/syslog-ng"
+      # - "./config:/etc/syslog-ng/"
       - "./syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
       - "./timezone:/etc/timezone:ro"
 ```
